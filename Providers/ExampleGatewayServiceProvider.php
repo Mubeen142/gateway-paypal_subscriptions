@@ -3,7 +3,6 @@
 namespace Modules\ExampleGateway\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Factory;
 
 class ExampleGatewayServiceProvider extends ServiceProvider
 {

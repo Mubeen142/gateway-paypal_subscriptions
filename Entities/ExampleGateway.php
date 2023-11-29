@@ -5,7 +5,6 @@ namespace Modules\ExampleGateway\Entities;
 use App\Models\Gateways\Gateway;
 use App\Models\Gateways\PaymentGatewayInterface;
 use App\Models\Payment;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Omnipay\Common\GatewayInterface;
 
