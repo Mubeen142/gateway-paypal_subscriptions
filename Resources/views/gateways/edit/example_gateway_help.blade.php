@@ -10,19 +10,19 @@
             Webhook URL:
             <textarea id="webhookUrl" style="display: none;">{{ route('payment.return', ['gateway' => $gateway->endpoint]) }}</textarea>
 
-            <button class="btn btn-link" onclick="copyUrlToClipboard()">{{ route('payment.return', ['gateway' => $gateway->endpoint]) }}</button>
+            <button class="btn btn-link"
+                onclick="copyUrlToClipboard()">{{ route('payment.return', ['gateway' => $gateway->endpoint]) }}</button>
         </div>
-        Stripe URL: <a target="_blank" class="btn btn-link" href="https://dashboard.stripe.com/developers">https://dashboard.stripe.com/developers</a>
+        Stripe URL: <a target="_blank" class="btn btn-link"
+            href="https://dashboard.stripe.com/developers">https://dashboard.stripe.com/developers</a>
         <div class="youtube-container">
-            <iframe src="https://www.youtube.com/embed/2pxPd35eqXg"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
+            <iframe src="https://www.youtube.com/embed/2pxPd35eqXg" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
             </iframe>
         </div>
     </div>
 </div>
-
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -56,7 +56,6 @@
         height: 100%;
     }
 </style>
-
 
 <script>
     async function copyUrlToClipboard() {

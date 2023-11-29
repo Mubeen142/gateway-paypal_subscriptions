@@ -33,8 +33,6 @@ class ExampleGateway implements PaymentGatewayInterface
         /** @var GatewayInterface $omnipayGateway */
         $omnipayGateway = Gateway::getGateway($gateway->driver);
 
-
-
         // An example using Omnipay
         // These parameters can be different, it all depends on the gateway
         $response = $omnipayGateway->purchase([
@@ -52,7 +50,6 @@ class ExampleGateway implements PaymentGatewayInterface
             throw new \Exception($response->getMessage());
         }
     }
-
 
     /**
      * Handles the response from the payment gateway. It uses a Request object to receive and handle the response appropriately.
@@ -105,7 +102,6 @@ class ExampleGateway implements PaymentGatewayInterface
         $omnipayGateway = Gateway::getGateway($payment->gateway['driver']);
     }
 
-
     /**
      * Defines the configuration for the payment gateway. It returns an array with data defining the gateway driver,
      * type, class, endpoint, refund support, etc.
@@ -135,7 +131,6 @@ class ExampleGateway implements PaymentGatewayInterface
     {
         return 'example-endpoint';
     }
-
 
     /**
      * Returns an array with the configuration for the payment gateway.

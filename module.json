@@ -8,8 +8,6 @@
         "Modules\\ExampleGateway\\Providers\\ExampleGatewayServiceProvider"
     ],
     "files": [],
-
-
     "type": "gateway",
     "class": "Modules\\ExampleGateway\\Entities\\ExampleGateway"
 }
