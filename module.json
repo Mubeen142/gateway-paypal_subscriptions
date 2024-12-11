@@ -1,13 +1,13 @@
 {
-    "name": "ExampleGateway",
-    "alias": "examplegateway",
+    "name": "PayPalSubscriptionsGateway",
+    "alias": "paypal_subscriptions_gateway",
     "description": "",
     "keywords": [],
     "priority": 0,
     "providers": [
-        "Modules\\ExampleGateway\\Providers\\ExampleGatewayServiceProvider"
+        "Modules\\PayPalSubscriptionsGateway\\Providers\\PayPalSubscriptionsGatewayServiceProvider"
     ],
     "files": [],
     "type": "gateway",
-    "class": "Modules\\ExampleGateway\\Entities\\ExampleGateway"
+    "class": "Modules\\PayPalSubscriptionsGateway\\Entities\\PayPalSubscriptionsGateway"
 }
