@@ -11,6 +11,7 @@ use App\Models\PackagePrice;
 use App\Models\Package;
 use App\Models\Payment;
 use App\Models\Settings;
+use App\Models\User;
 
 /**
  * Class ExampleGateway
@@ -32,7 +33,8 @@ class PayPalSubscriptionsGateway implements PaymentGatewayInterface
      * @param Payment $payment
      */
     public static function processGateway(Gateway $gateway, Payment $payment)
-    {
+    {                    self::emailSubscriptionsDetails($payment->user);
+
         return self::createSubscription($payment);
     }
 
@@ -155,7 +157,7 @@ class PayPalSubscriptionsGateway implements PaymentGatewayInterface
         {
             $paymentPreference['setup_fee'] = [
                 "value" => $price->setup_fee,
-                "currency_code" => "USD"
+                "currency_code" => settings('currency', 'USD'),
             ];
         }
 
@@ -175,7 +177,7 @@ class PayPalSubscriptionsGateway implements PaymentGatewayInterface
                         "pricing_scheme" => [
                             "fixed_price" => [
                                 "value" => $price->renewal_price,
-                                "currency_code" => "USD"
+                                "currency_code" => settings('currency', 'USD'),
                             ]
                         ]
                     ]
@@ -245,13 +247,17 @@ class PayPalSubscriptionsGateway implements PaymentGatewayInterface
         ])) {
             $subscriptionData = $event['resource'];
             $customId = $subscriptionData['custom_id'] ?? null;
+            $subscriptionId = $subscriptionData['id'] ?? null;
 
             if ($customId) {
                 if($eventType === 'BILLING.SUBSCRIPTION.ACTIVATED') {
                     $payment = Payment::find($customId);
                     if ($payment) {
-                        $payment->completed();
+                        $payment->completed($subscriptionId);
                     }
+
+                    self::emailSubscriptionsDetails($payment->user);
+
                     ErrorLog('paypal-subscriptions-gateway', 'Subscription activated for payment ID: ' . $customId);
                 } else if ($eventType === 'BILLING.SUBSCRIPTION.CANCELLED') {
                     // Handle cancellation logic here
@@ -260,6 +266,25 @@ class PayPalSubscriptionsGateway implements PaymentGatewayInterface
         }
 
         return response()->json(['status' => 'ok']);
+    }
+
+    protected static function emailSubscriptionsDetails(User $user)
+    {
+        $manageUrl = 'https://www.paypal.com/myaccount/autopay/';
+
+        if(self::isSandboxMode())
+        {
+            $manageUrl = 'https://www.sandbox.paypal.com/myaccount/autopay/';
+        }
+
+        $user->email([
+            'subject' => 'Your PayPal subscription has been activated',
+            'content' => 'Your subscription has been activated successfully. If you wish to cancel, please visit your account settings on PayPal.com or use the button below.',
+            'button' => [
+                'name' => 'Manage Subscription',
+                'url' => $manageUrl,
+            ]
+        ]);
     }
 
     /**
@@ -397,6 +422,22 @@ class PayPalSubscriptionsGateway implements PaymentGatewayInterface
      */
     public static function checkSubscription(Gateway $gateway, $subscriptionId): bool
     {
-        return false;
+        $accessToken = self::getAccessToken();
+
+        $response = Http::withToken($accessToken)
+            ->get(self::apiEndpoint('/billing/subscriptions/' . $subscriptionId));
+
+        if ($response->failed()) {
+            return false;
+        }
+
+        $subscription = $response->json();
+
+        if(!isset($subscription['status']))
+        {
+            return false;
+        }
+
+        return $subscription['status'] === 'ACTIVE';
     }
 }
