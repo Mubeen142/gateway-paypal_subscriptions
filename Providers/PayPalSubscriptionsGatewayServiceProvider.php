@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\ExampleGateway\Providers;
+namespace Modules\PayPalSubscriptionsGateway\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
