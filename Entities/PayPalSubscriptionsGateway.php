@@ -334,8 +334,8 @@ class PayPalSubscriptionsGateway implements PaymentGatewayInterface
     public static function drivers(): array
     {
         return [
-            'PayPal_subscriptions_gateway' => [
-                'driver' => 'PayPal_subscriptions_gateway',
+            'PayPalSubscriptionsGateway' => [
+                'driver' => 'PayPalSubscriptionsGateway',
                 'type' => 'subscription', // subscription
                 'class' => 'Modules\PayPalSubscriptionsGateway\Entities\PayPalSubscriptionsGateway',
                 'endpoint' => self::endpoint(),
