@@ -33,8 +33,7 @@ class PayPalSubscriptionsGateway implements PaymentGatewayInterface
      * @param Payment $payment
      */
     public static function processGateway(Gateway $gateway, Payment $payment)
-    {                    self::emailSubscriptionsDetails($payment->user);
-
+    {
         return self::createSubscription($payment);
     }
 
@@ -356,7 +355,7 @@ class PayPalSubscriptionsGateway implements PaymentGatewayInterface
 
     public static function getGateway()
     {
-        return Gateway::where('driver', 'PayPal_subscriptions_gateway')->first();
+        return Gateway::where('driver', 'PayPalSubscriptionsGateway')->first();
     }
 
     public static function isSandboxMode(): bool
