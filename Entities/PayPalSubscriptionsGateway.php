@@ -324,6 +324,20 @@ class PayPalSubscriptionsGateway implements PaymentGatewayInterface
         // todo
     }
 
+    public static function cancelSubscription(Gateway $gateway, $subscriptionId): void
+    {
+        try {
+            $accessToken = self::getAccessToken();
+
+            $response = Http::withToken($accessToken)
+                ->post(self::apiEndpoint('/billing/subscriptions/' . $subscriptionId . '/cancel'), [
+                    'reason' => 'User canceled subscription',
+                ]);
+        } catch (\Exception $e) {
+            ErrorLog('paypal-subscriptions-gateway', 'Failed to cancel subscription: ' . $e->getMessage());
+        }
+    }
+
     /**
      * Defines the configuration for the payment gateway. It returns an array with data defining the gateway driver,
      * type, class, endpoint, refund support, etc.
